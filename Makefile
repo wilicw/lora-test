@@ -13,7 +13,6 @@ monitor:
 	$(SERIAL_MONITOR) $(DEVICE) 115200
 
 clean:
-	rm -rf $(TMP_DIR)
 	rm -rf build/
 
 .PHONY: flash monitor clean
