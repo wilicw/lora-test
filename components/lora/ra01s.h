@@ -12,8 +12,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "bsp.h"
-
 // return values
 #define ERR_NONE 0
 #define ERR_PACKET_TOO_LONG 1
