@@ -5,6 +5,7 @@ SERIAL_MONITOR:=pyserial-miniterm
 
 all: ./main
 	idf.py build
+	mv build/compile_commands.json . 2>/dev/null || true
 
 flash:
 	idf.py flash
