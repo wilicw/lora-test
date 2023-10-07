@@ -1,0 +1,45 @@
+menu "Pro Configuration"
+
+    orsource "$IDF_PATH/examples/common_components/env_caps/$IDF_TARGET/Kconfig.env_caps"
+
+    config LORA_MOSI_GPIO
+		  int "LORA MOSI GPIO"
+      range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+      default 35
+
+    config LORA_MISO_GPIO
+		  int "LORA MISO GPIO"
+      range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+      default 37
+
+    config LORA_SCK_GPIO
+		  int "LORA SCK GPIO"
+      range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+      default 36
+
+  	config LORA_NSS_GPIO
+  		int "LORA NSS GPIO"
+      range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+  		default 2
+
+  	config RST_GPIO
+  		int "LORA RST GPIO"
+      range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+  		default 21
+
+  	config BUSY_GPIO
+  		int "LORA BUSY GPIO"
+      range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+      default 38
+
+  	config TXEN_GPIO
+  		int "LORA TXEN GPIO"
+      range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+  		default -1
+
+  	config RXEN_GPIO
+  		int "LORA RXEN GPIO"
+      range ENV_GPIO_RANGE_MIN ENV_GPIO_OUT_RANGE_MAX
+  		default -1
+
+endmenu
