@@ -24,6 +24,22 @@ void spi_init(spi_host_device_t device, uint32_t mosi, uint32_t miso,
   ESP_LOGI(TAG, "SPI%d_HOST spi_bus_initialize=%d", device + 1, ret);
 }
 
+void indicator_init() {
+  gpio_config_t io_conf;
+  io_conf.intr_type = GPIO_INTR_DISABLE;
+  io_conf.mode = GPIO_MODE_OUTPUT;
+  io_conf.pin_bit_mask = BIT(CONFIG_INDI_LED);
+  io_conf.pull_down_en = 0;
+  io_conf.pull_up_en = 0;
+  gpio_config(&io_conf);
+}
+
+void indicator_toggle() {
+  static uint8_t state = 0;
+  state ^= 1;
+  gpio_set_level(CONFIG_INDI_LED, state);
+}
+
 void task(void *pvParameters) {
   uint8_t message[] = "Hello World";
   size_t len;
@@ -34,6 +50,7 @@ void task(void *pvParameters) {
       for (size_t i = 0; i < len; i++)
         printf("%c", data[i]);
       puts("");
+      indicator_toggle();
     }
     if (xTaskGetTickCount() - last_send >= pdMS_TO_TICKS(1000)) {
       printf("i = %lu\n", xTaskGetTickCount());
@@ -45,7 +62,11 @@ void task(void *pvParameters) {
 }
 
 void app_main(void) {
-  vTaskDelay(5000 / portTICK_PERIOD_MS);
+  indicator_init();
+  for (int i = 0; i < 50; i++) {
+    indicator_toggle();
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+  }
   spi_init(LORA_SPI_HOST, CONFIG_LORA_MOSI_GPIO, CONFIG_LORA_MISO_GPIO,
            CONFIG_LORA_SCK_GPIO);
   lora_init();
