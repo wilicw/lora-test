@@ -41,19 +41,19 @@ void indicator_toggle() {
 }
 
 void task(void *pvParameters) {
-  uint8_t message[] = "Hello World";
+  uint8_t message[] = "ME0W!";
   size_t len;
   uint8_t data[RECV_LEN];
   uint32_t last_send = xTaskGetTickCount();
   while (1) {
     if ((len = LoRaReceive(&data[0], RECV_LEN)) > 0) {
-      for (size_t i = 0; i < len; i++)
-        printf("%c", data[i]);
-      puts("");
+      int8_t rssi, snr;
+      GetPacketStatus(&rssi, &snr);
+      ESP_LOGI(TAG, "RSSI=%d SNR=%d", rssi, snr);
+      ESP_LOG_BUFFER_HEXDUMP(TAG, data, len, ESP_LOG_INFO);
       indicator_toggle();
     }
-    if (xTaskGetTickCount() - last_send >= pdMS_TO_TICKS(1000)) {
-      printf("i = %lu\n", xTaskGetTickCount());
+    if (xTaskGetTickCount() - last_send >= pdMS_TO_TICKS(3000)) {
       LoRaSend(message, sizeof(message), SX126x_TXMODE_SYNC);
       last_send = xTaskGetTickCount();
     }
